@@ -15,7 +15,8 @@ class FarmerController {
 			await schemaValidation.validate(req.body, { abortEarly: false })
 			const { name, email, phone, isSupervisor } = req.body
 
-			return await service.store({ name, email, phone, isSupervisor }, res)
+			const resultService = await service.store({ name, email, phone, isSupervisor })
+			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
 				error: {
@@ -37,7 +38,8 @@ class FarmerController {
 			await schemaValidation.validate(req.body, { abortEarly: false })
 			const { name, email, phone, isSupervisor } = req.body
 
-			return await service.update({ name, email, phone, isSupervisor }, res)
+			const resultService = await service.update({ name, email, phone, isSupervisor }, res)
+			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
 				error: {
@@ -56,7 +58,8 @@ class FarmerController {
 			await schemaValidation.validate(req.body, { abortEarly: false })
 			const { _id } = req.body
 
-			return await service.get(_id, res)
+			const resultService = await service.get(_id, res)
+			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
 				error: {
@@ -68,7 +71,8 @@ class FarmerController {
 
 	async getAll(_, res) {
 		try {
-			return await service.getAll(res)
+			const resultService = await service.getAll(res)
+			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
 				error: {
@@ -87,7 +91,8 @@ class FarmerController {
 			await schemaValidation.validate(req.body, { abortEarly: false })
 			const { _id } = req.body
 
-			return await service.delete(_id, res)
+			const resultService = await service.delete(_id, res)
+			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
 				error: {

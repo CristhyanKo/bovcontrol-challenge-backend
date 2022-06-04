@@ -23,7 +23,8 @@ class FarmController {
 			await schemaValidation.validate(req.body, { abortEarly: false })
 			const { name, location, farmers, cowsHead, factories, supervisors } = req.body
 
-			return await service.store({ name, location, farmers, cowsHead, factories, supervisors }, res)
+			const resultService = await service.store({ name, location, farmers, cowsHead, factories, supervisors }, res)
+			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
 				error: {
@@ -45,7 +46,8 @@ class FarmController {
 			await schemaValidation.validate(req.body, { abortEarly: false })
 			const { name, location, farmers, cowsHead, factories, supervisors } = req.body
 
-			return await service.update({ name, location, farmers, cowsHead, factories, supervisors }, res)
+			const resultService = await service.update({ name, location, farmers, cowsHead, factories, supervisors }, res)
+			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
 				error: {
@@ -64,7 +66,8 @@ class FarmController {
 			await schemaValidation.validate(req.body, { abortEarly: false })
 			const { _id } = req.body
 
-			return await service.get(_id, res)
+			const resultService = await service.get(_id, res)
+			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
 				error: {
@@ -76,7 +79,8 @@ class FarmController {
 
 	async getAll(_, res) {
 		try {
-			return await service.getAll(res)
+			const resultService = await service.getAll(res)
+			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
 				error: {
@@ -95,7 +99,8 @@ class FarmController {
 			await schemaValidation.validate(req.body, { abortEarly: false })
 			const { _id } = req.body
 
-			return await service.delete(_id, res)
+			const resultService = await service.delete(_id, res)
+			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
 				error: {
@@ -109,6 +114,7 @@ class FarmController {
 		try {
 			return res.json({ message: 'ok' })
 			// return await service.addFarmer(_id, res)
+			// return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
 				error: {

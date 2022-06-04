@@ -1,3 +1,6 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
+
 const mongoose = require('mongoose')
 
 class ServiceBase {
@@ -5,58 +8,100 @@ class ServiceBase {
 		this.model = model
 	}
 
-	async store(data, res) {
+	async store(data) {
 		const result = await this.model.create(data)
 
-		return res.json({
+		return {
 			result: {
 				message: 'Cadastro realizado com sucesso !',
 				data: result,
 			},
-		})
+		}
 	}
 
-	async update(data, res) {
+	async update(data) {
 		const { _id } = data
 		const result = await this.model.findOneAndUpdate({ _id }, data, { new: true })
 
-		return res.json({
+		return {
 			result: {
-				message: 'Cadastro realizado com sucesso !',
+				message: 'Cadastro atualizado com sucesso !',
 				data: result,
 			},
-		})
+		}
 	}
 
-	async get(id, res) {
+	async get(id) {
 		const result = await this.model.findOne({ _id: new mongoose.Types.ObjectId(id) })
 
-		return res.json({
+		return {
 			result: {
 				data: result || {},
 			},
-		})
+		}
 	}
 
-	async getAll(res) {
+	async getAll() {
 		const result = await this.model.find()
 
-		return res.json({
+		return {
 			result: {
 				data: result,
 			},
-		})
+		}
 	}
 
-	async delete(id, res) {
+	async delete(id) {
 		const result = await this.model.findOneAndDelete({ _id: id })
 
-		return res.json({
+		return {
 			result: {
-				message: 'Item deletado com sucesso!',
+				message: 'Cadastro deletado com sucesso!',
 				data: result,
 			},
-		})
+		}
+	}
+
+	async addArray(propertyArray, _id, data) {
+		const result = await this.model.findOneAndUpdate({ _id }, { $push: { [propertyArray]: data } }, { new: true })
+
+		return {
+			result: {
+				message: 'Item adicionado com sucesso !',
+				data: result,
+			},
+		}
+	}
+
+	async removeArray(propertyArray, _id, data) {
+		await this.model.findOneAndUpdate({ _id }, { $pull: { [propertyArray]: { $elemMatch: { data } } } }, { new: true })
+
+		return {
+			result: {
+				message: 'Item removido com sucesso !',
+			},
+		}
+	}
+
+	async updateArray(propertyArray, _id, dataFilter, data) {
+		let updateObject = {}
+
+		for (const key in data) {
+			updateObject = { ...updateObject, [`${propertyArray}.$.${key}`]: data[key] }
+		}
+
+		const result = await this.model.findOneAndUpdate(
+			{ _id, [propertyArray]: { $elemMatch: { dataFilter } } },
+			{ $set: updateObject },
+			{ new: true }
+		)
+
+		return {
+			result: {
+				message: 'Item atualizado com sucesso !',
+				data: result,
+			},
+		}
 	}
 }
 
