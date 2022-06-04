@@ -1,8 +1,10 @@
 const yup = require('yup')
 const propertyMessage = require('../helpers/PropertyMessage')
-const service = require('../services/FarmerService')
+const ServiceBase = require('../services/ServiceBase')
+const Model = require('../models/Farmer')
 
-class Farmer {
+const service = new ServiceBase(Model)
+class FarmerController {
 	async store(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
@@ -14,6 +16,28 @@ class Farmer {
 			const { name, email, phone, isSupervisor } = req.body
 
 			return await service.store({ name, email, phone, isSupervisor }, res)
+		} catch (error) {
+			return res.status(400).json({
+				error: {
+					message: error.errors || error.message,
+				},
+			})
+		}
+	}
+
+	async update(req, res) {
+		try {
+			const schemaValidation = yup.object().shape({
+				_id: yup.string().required(propertyMessage.required('_id')).length(24, propertyMessage.validate('_id')),
+				name: yup.string(propertyMessage.validate('Nome')),
+				email: yup.string().email(propertyMessage.validate('Email')),
+				phone: yup.string().email(propertyMessage.validate('Telefone')),
+			})
+
+			await schemaValidation.validate(req.body, { abortEarly: false })
+			const { name, email, phone, isSupervisor } = req.body
+
+			return await service.update({ name, email, phone, isSupervisor }, res)
 		} catch (error) {
 			return res.status(400).json({
 				error: {
@@ -74,4 +98,4 @@ class Farmer {
 	}
 }
 
-module.exports = new Farmer()
+module.exports = new FarmerController()
