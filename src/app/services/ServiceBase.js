@@ -19,9 +19,8 @@ class ServiceBase {
 		}
 	}
 
-	async update(data) {
-		const { _id } = data
-		const result = await this.model.findOneAndUpdate({ _id }, data, { new: true })
+	async update(id, data) {
+		const result = await this.model.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, data, { new: true })
 
 		return {
 			result: {
@@ -74,7 +73,7 @@ class ServiceBase {
 	}
 
 	async removeArray(propertyArray, _id, data) {
-		await this.model.findOneAndUpdate({ _id }, { $pull: { [propertyArray]: { $elemMatch: { data } } } }, { new: true })
+		await this.model.findOneAndUpdate({ _id }, { $pull: { [propertyArray]: data } }, { new: true })
 
 		return {
 			result: {

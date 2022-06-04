@@ -1,4 +1,8 @@
 const mongoose = require('mongoose')
+require('./City')
+require('./State')
+require('./Farmer')
+require('./Factory')
 
 const FarmSchema = new mongoose.Schema(
 	{
@@ -11,11 +15,13 @@ const FarmSchema = new mongoose.Schema(
 				type: mongoose.Schema.Types.ObjectId,
 				required: true,
 				ref: 'City',
+				autopopulate: true,
 			},
 			state: {
 				type: mongoose.Schema.Types.ObjectId,
 				required: true,
 				ref: 'State',
+				autopopulate: true,
 			},
 			coordinates: {
 				latitude: {
@@ -33,6 +39,7 @@ const FarmSchema = new mongoose.Schema(
 				farmer: {
 					type: mongoose.Schema.Types.ObjectId,
 					ref: 'Farmer',
+					autopopulate: true,
 				},
 				startDate: {
 					type: Date,
@@ -55,6 +62,7 @@ const FarmSchema = new mongoose.Schema(
 				factory: {
 					type: mongoose.Schema.Types.ObjectId,
 					ref: 'Factory',
+					autopopulate: true,
 				},
 				factoryDistance: {
 					type: Number,
@@ -67,6 +75,7 @@ const FarmSchema = new mongoose.Schema(
 				farmerSupervisor: {
 					type: mongoose.Schema.Types.ObjectId,
 					ref: 'Farmer',
+					autopopulate: true,
 				},
 				startDate: {
 					type: Date,
@@ -83,5 +92,7 @@ const FarmSchema = new mongoose.Schema(
 	},
 	{ timestamps: true }
 )
+
+FarmSchema.plugin(require('mongoose-autopopulate'))
 
 module.exports = mongoose.model('Farm', FarmSchema)

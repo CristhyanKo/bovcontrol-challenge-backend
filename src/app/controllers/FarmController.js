@@ -37,16 +37,16 @@ class FarmController {
 	async update(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
-				_id: yup.string().required(propertyMessage.required('_id')).length(24, propertyMessage.validate('_id')),
+				farmId: yup.string().required(propertyMessage.required('Fazenda')).length(24, propertyMessage.validate('Fazenda')),
 				name: yup.string(propertyMessage.validate('Nome')),
 				email: yup.string().email(propertyMessage.validate('Email')),
 				phone: yup.string().email(propertyMessage.validate('Telefone')),
 			})
 
 			await schemaValidation.validate(req.body, { abortEarly: false })
-			const { name, location, farmers, cowsHead, factories, supervisors } = req.body
+			const { farmId, name, location, farmers, cowsHead, factories, supervisors } = req.body
 
-			const resultService = await service.update({ name, location, farmers, cowsHead, factories, supervisors }, res)
+			const resultService = await service.update(farmId, { name, location, farmers, cowsHead, factories, supervisors })
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
@@ -60,13 +60,13 @@ class FarmController {
 	async get(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
-				_id: yup.string().required(propertyMessage.required('_id')).length(24, propertyMessage.validate('_id')),
+				farmId: yup.string().required(propertyMessage.required('Fazenda')).length(24, propertyMessage.validate('Fazenda')),
 			})
 
 			await schemaValidation.validate(req.body, { abortEarly: false })
-			const { _id } = req.body
+			const { farmId } = req.body
 
-			const resultService = await service.get(_id, res)
+			const resultService = await service.get(farmId, res)
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
@@ -93,13 +93,13 @@ class FarmController {
 	async delete(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
-				_id: yup.string().required(propertyMessage.required('_id')).length(24, propertyMessage.validate('_id')),
+				farmId: yup.string().required(propertyMessage.required('Fazenda')).length(24, propertyMessage.validate('Fazenda')),
 			})
 
 			await schemaValidation.validate(req.body, { abortEarly: false })
-			const { _id } = req.body
+			const { farmId } = req.body
 
-			const resultService = await service.delete(_id, res)
+			const resultService = await service.delete(farmId, res)
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
@@ -112,9 +112,72 @@ class FarmController {
 
 	async addFarmer(req, res) {
 		try {
-			return res.json({ message: 'ok' })
-			// return await service.addFarmer(_id, res)
-			// return res.json(resultService)
+			const schemaValidation = yup.object().shape({
+				farmId: yup.string().required(propertyMessage.required('Fazenda')).length(24, propertyMessage.validate('Fazenda')),
+				farmer: yup.string().required(propertyMessage.required('Fazendeiro')).length(24, propertyMessage.validate('Fazendeiro')),
+				startDate: yup.date().required(propertyMessage.required('Data de início')),
+			})
+
+			await schemaValidation.validate(req.body, { abortEarly: false })
+			const { farmId } = req.body
+			const adds = {
+				farmer: req.body.farmer,
+				startDate: req.body.startDate,
+				endDate: req.body.endDate,
+				current: req.body.current,
+			}
+			const resultService = await service.addArray('farmers', farmId, adds)
+
+			return res.json(resultService)
+		} catch (error) {
+			return res.status(400).json({
+				error: {
+					message: error.errors || error.message,
+				},
+			})
+		}
+	}
+
+	async updateFarmer(req, res) {
+		try {
+			const schemaValidation = yup.object().shape({
+				farmId: yup.string().required(propertyMessage.required('Fazenda')).length(24, propertyMessage.validate('Fazenda')),
+				farmer: yup.string().required(propertyMessage.required('Fazendeiro')).length(24, propertyMessage.validate('Fazendeiro')),
+			})
+
+			await schemaValidation.validate(req.body, { abortEarly: false })
+			const { farmId } = req.body
+			const update = {
+				farmer: req.body.farmer,
+				startDate: req.body.startDate,
+				endDate: req.body.endDate,
+				current: req.body.current,
+			}
+			const resultService = await service.updateArray('farmers', farmId, { farmer: req.body.farmer }, update)
+
+			return res.json(resultService)
+		} catch (error) {
+			return res.status(400).json({
+				error: {
+					message: error.errors || error.message,
+				},
+			})
+		}
+	}
+
+	async removeFarmer(req, res) {
+		try {
+			const schemaValidation = yup.object().shape({
+				farmId: yup.string().required(propertyMessage.required('Fazenda')).length(24, propertyMessage.validate('Fazenda')),
+				farmer: yup.string().required(propertyMessage.required('Fazendeiro')).length(24, propertyMessage.validate('Fazendeiro')),
+			})
+
+			await schemaValidation.validate(req.body, { abortEarly: false })
+			const { farmId } = req.body
+
+			const resultService = await service.removeArray('farmers', farmId, { farmer: req.body.farmer })
+
+			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
 				error: {

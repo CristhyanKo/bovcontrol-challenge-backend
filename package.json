@@ -6,6 +6,7 @@
 	"license": "MIT",
 	"scripts": {
 		"dev": "nodemon src/index.js -L",
+		"seed": "node src/seeder.js",
 		"lint": "eslint --ignore-path .gitignore .",
 		"lint:fix": "eslint --fix --ignore-path .gitignore ."
 	},
@@ -16,6 +17,7 @@
 		"dotenv": "^16.0.1",
 		"express": "^4.18.1",
 		"mongoose": "^6.3.5",
+		"mongoose-autopopulate": "^0.16.1",
 		"mongoose-seed": "^0.6.0",
 		"require-dir": "^1.2.0",
 		"yup": "^0.32.11"
