@@ -1,0 +1,7 @@
+{
+  "name": "bovcontrol-challenge-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/CristhyanKo/bovcontrol-challenge-backend",
+  "license": "MIT"
+}
