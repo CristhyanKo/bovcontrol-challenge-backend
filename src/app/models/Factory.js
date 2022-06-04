@@ -19,11 +19,11 @@ const FactorySchema = new mongoose.Schema(
 			},
 			coordinates: {
 				latitude: {
-					type: String,
+					type: Number,
 					required: true,
 				},
 				longitude: {
-					type: String,
+					type: Number,
 					required: true,
 				},
 			},
