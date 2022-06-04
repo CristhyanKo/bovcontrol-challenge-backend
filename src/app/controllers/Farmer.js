@@ -22,6 +22,56 @@ class Farmer {
 			})
 		}
 	}
+
+	async get(req, res) {
+		try {
+			const schemaValidation = yup.object().shape({
+				_id: yup.string().required(propertyMessage.required('_id')).length(24, propertyMessage.validate('_id')),
+			})
+
+			await schemaValidation.validate(req.body, { abortEarly: false })
+			const { _id } = req.body
+
+			return await service.get(_id, res)
+		} catch (error) {
+			return res.status(400).json({
+				error: {
+					message: error.errors || error.message,
+				},
+			})
+		}
+	}
+
+	async getAll(_, res) {
+		try {
+			return await service.getAll(res)
+		} catch (error) {
+			return res.status(400).json({
+				error: {
+					message: error.errors || error.message,
+				},
+			})
+		}
+	}
+
+	async delete(req, res) {
+		try {
+			const schemaValidation = yup.object().shape({
+				_id: yup.string().required(propertyMessage.required('_id')).length(24, propertyMessage.validate('_id')),
+			})
+
+			await schemaValidation.validate(req.body, { abortEarly: false })
+			const { _id } = req.body
+
+			return await service.delete(_id, res)
+		} catch (error) {
+			return res.status(400).json({
+				error: {
+					message: error.errors || error.message,
+				},
+			})
+		}
+	}
 }
 
 module.exports = new Farmer()
