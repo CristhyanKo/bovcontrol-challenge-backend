@@ -6,13 +6,8 @@ class Farmer {
 	async store(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
-				name: yup.string(propertyMessage.validate('Nome')).required(propertyMessage.required('Nome')),
-				email: yup
-					.string(propertyMessage.validate('Email'))
-					.email(propertyMessage.validate('Email'))
-					.required(propertyMessage.required('Email')),
-				phone: yup.string(propertyMessage.validate('Telefone')),
-				isSupervisor: yup.boolean(propertyMessage.validate('Supervisor')),
+				name: yup.string().required(propertyMessage.required('Nome')),
+				email: yup.string().email(propertyMessage.validate('Email')).required(propertyMessage.required('Email')),
 			})
 
 			await schemaValidation.validate(req.body, { abortEarly: false })

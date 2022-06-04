@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const mongoose = require('mongoose')
 
 class App {
 	constructor() {
@@ -8,9 +9,16 @@ class App {
 
 		require('dotenv').config()
 
-		// DB
+		this.database()
 		this.middlewares()
 		this.routes()
+	}
+
+	database() {
+		mongoose.connect(process.env.MONGO_URL, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+		})
 	}
 
 	middlewares() {
