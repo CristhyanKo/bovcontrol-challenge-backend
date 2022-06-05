@@ -11,6 +11,7 @@ module.exports = {
 	},
 	plugins: ['eslint-plugin-import-helpers', 'prettier'],
 	rules: {
+		'import/no-dynamic-require': 'off',
 		'import/newline-after-import': 'off',
 		'import/prefer-default-export': 'off',
 		radix: 'off',

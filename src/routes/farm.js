@@ -1,24 +1,24 @@
 const express = require('express')
 
 const routes = express.Router()
-const constrollers = require('../app/controllers')
+const controller = require('../app/controllers').FarmController
 
-routes.post('/get', constrollers.FarmController.get)
-routes.get('/getAll', constrollers.FarmController.getAll)
-routes.post('/store', constrollers.FarmController.store)
-routes.post('/update', constrollers.FarmController.update)
-routes.post('/delete', constrollers.FarmController.delete)
+routes.post('/store', controller.store)
+routes.put('/update', controller.update)
+routes.post('/delete', controller.delete)
+routes.post('/get', controller.get)
+routes.get('/getAll', controller.getAll)
 
-routes.post('/addFarmer', constrollers.FarmController.addFarmer)
-routes.post('/removeFarmer', constrollers.FarmController.removeFarmer)
-routes.put('/updateFarmer', constrollers.FarmController.updateFarmer)
+routes.post('/addFarmer', controller.addFarmer)
+routes.post('/removeFarmer', controller.removeFarmer)
+routes.put('/updateFarmer', controller.updateFarmer)
 
-// routes.post('/addFactory', constrollers.FarmController.addFactory)
-// routes.delete('/removeFactory', constrollers.FarmController.removeFactory)
-// routes.put('/updateFactory', constrollers.FarmController.updateFactory)
+routes.post('/addFactory', controller.addFactory)
+routes.post('/removeFactory', controller.removeFactory)
+routes.put('/updateFactory', controller.updateFactory)
 
-// routes.post('/addSupervisor', constrollers.FarmController.addSupervisor)
-// routes.delete('/removeSupervisor', constrollers.FarmController.removeSupervisor)
-// routes.put('/updateSupervisor', constrollers.FarmController.updateSupervisor)
+routes.post('/addSupervisor', controller.addSupervisor)
+routes.post('/removeSupervisor', controller.removeSupervisor)
+routes.put('/updateSupervisor', controller.updateSupervisor)
 
 module.exports = routes

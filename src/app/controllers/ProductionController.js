@@ -1,21 +1,23 @@
 const yup = require('yup')
 const propertyMessage = require('../helpers/PropertyMessage')
 const ServiceBase = require('../services/ServiceBase')
-const Model = require('../models/Farmer')
+const Model = require('../models/Production')
 
 const service = new ServiceBase(Model)
-class FarmerController {
+
+class ProductionController {
 	async store(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
-				name: yup.string().required(propertyMessage.required('Nome')),
-				email: yup.string().email(propertyMessage.validate('Email')).required(propertyMessage.required('Email')),
+				farm: yup.string().required(propertyMessage.required('Fabrica')).length(24, propertyMessage.validate('Fabrica')),
+				date: yup.date().required(propertyMessage.required('Data')),
+				milkProduced: yup.number().required(propertyMessage.required('Leite Produzido')),
 			})
 
 			await schemaValidation.validate(req.body, { abortEarly: false })
-			const { name, email, phone, isSupervisor } = req.body
+			const { farm, date, milkProduced } = req.body
 
-			const resultService = await service.store({ name, email, phone, isSupervisor })
+			const resultService = await service.store({ farm, date, milkProduced }, res)
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
@@ -29,24 +31,21 @@ class FarmerController {
 	async update(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
-				farmerId: yup.string().required(propertyMessage.required('Fazendeiro')).length(24, propertyMessage.validate('Fazendeiro')),
-				name: yup.string(propertyMessage.validate('Nome')),
-				email: yup.string().email(propertyMessage.validate('Email')),
-				phone: yup.string().email(propertyMessage.validate('Telefone')),
+				productionId: yup.string().required(propertyMessage.required('Produção')).length(24, propertyMessage.validate('Produção')),
 			})
 
 			await schemaValidation.validate(req.body, { abortEarly: false })
-			const { farmerId, name, email, phone, isSupervisor } = req.body
+			const { productionId, farm, date, milkProduced } = req.body
 
-			if (!(await service.checkExist(farmerId))) {
+			if (!(await service.checkExist(productionId))) {
 				return res.status(400).json({
 					error: {
-						message: 'Fazendeiro não encontrado',
+						message: 'Produção não encontrada',
 					},
 				})
 			}
 
-			const resultService = await service.update(farmerId, { name, email, phone, isSupervisor })
+			const resultService = await service.update(productionId, { farm, date, milkProduced })
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
@@ -60,21 +59,21 @@ class FarmerController {
 	async get(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
-				farmerId: yup.string().required(propertyMessage.required('Fazendeiro')).length(24, propertyMessage.validate('Fazendeiro')),
+				productionId: yup.string().required(propertyMessage.required('Produção')).length(24, propertyMessage.validate('Produção')),
 			})
 
 			await schemaValidation.validate(req.body, { abortEarly: false })
-			const { farmerId } = req.body
+			const { productionId } = req.body
 
-			if (!(await service.checkExist(farmerId))) {
+			if (!(await service.checkExist(productionId))) {
 				return res.status(400).json({
 					error: {
-						message: 'Fazendeiro não encontrado',
+						message: 'Produção não encontrada',
 					},
 				})
 			}
 
-			const resultService = await service.get(farmerId, res)
+			const resultService = await service.get(productionId, res)
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
@@ -101,21 +100,21 @@ class FarmerController {
 	async delete(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
-				farmerId: yup.string().required(propertyMessage.required('Fazendeiro')).length(24, propertyMessage.validate('Fazendeiro')),
+				productionId: yup.string().required(propertyMessage.required('Produção')).length(24, propertyMessage.validate('Produção')),
 			})
 
 			await schemaValidation.validate(req.body, { abortEarly: false })
-			const { farmerId } = req.body
+			const { productionId } = req.body
 
-			if (!(await service.checkExist(farmerId))) {
+			if (!(await service.checkExist(productionId))) {
 				return res.status(400).json({
 					error: {
-						message: 'Fazendeiro não encontrado',
+						message: 'Produção não encontrada',
 					},
 				})
 			}
 
-			const resultService = await service.delete(farmerId, res)
+			const resultService = await service.delete(productionId, res)
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
@@ -127,4 +126,4 @@ class FarmerController {
 	}
 }
 
-module.exports = new FarmerController()
+module.exports = new ProductionController()

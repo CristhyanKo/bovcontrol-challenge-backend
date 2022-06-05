@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+require('./State')
 
 const CitySchema = new mongoose.Schema(
 	{
@@ -17,9 +18,12 @@ const CitySchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			required: true,
 			ref: 'State',
+			autopopulate: true,
 		},
 	},
 	{ timestamps: true }
 )
+
+CitySchema.plugin(require('mongoose-autopopulate'))
 
 module.exports = mongoose.model('City', CitySchema)

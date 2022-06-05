@@ -1,21 +1,21 @@
 const yup = require('yup')
 const propertyMessage = require('../helpers/PropertyMessage')
 const ServiceBase = require('../services/ServiceBase')
-const Model = require('../models/Farmer')
+const Model = require('../models/ChecklistType')
 
 const service = new ServiceBase(Model)
-class FarmerController {
+
+class ChecklistTypeController {
 	async store(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
 				name: yup.string().required(propertyMessage.required('Nome')),
-				email: yup.string().email(propertyMessage.validate('Email')).required(propertyMessage.required('Email')),
 			})
 
 			await schemaValidation.validate(req.body, { abortEarly: false })
-			const { name, email, phone, isSupervisor } = req.body
+			const { name } = req.body
 
-			const resultService = await service.store({ name, email, phone, isSupervisor })
+			const resultService = await service.store({ name }, res)
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
@@ -29,24 +29,24 @@ class FarmerController {
 	async update(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
-				farmerId: yup.string().required(propertyMessage.required('Fazendeiro')).length(24, propertyMessage.validate('Fazendeiro')),
-				name: yup.string(propertyMessage.validate('Nome')),
-				email: yup.string().email(propertyMessage.validate('Email')),
-				phone: yup.string().email(propertyMessage.validate('Telefone')),
+				checklistTypeId: yup
+					.string()
+					.required(propertyMessage.required('Tipo de Checklist'))
+					.length(24, propertyMessage.validate('Tipo de Checklist')),
 			})
 
 			await schemaValidation.validate(req.body, { abortEarly: false })
-			const { farmerId, name, email, phone, isSupervisor } = req.body
+			const { checklistTypeId, name } = req.body
 
-			if (!(await service.checkExist(farmerId))) {
+			if (!(await service.checkExist(checklistTypeId))) {
 				return res.status(400).json({
 					error: {
-						message: 'Fazendeiro não encontrado',
+						message: 'Tipo de Checklist não encontrado',
 					},
 				})
 			}
 
-			const resultService = await service.update(farmerId, { name, email, phone, isSupervisor })
+			const resultService = await service.update(checklistTypeId, { name })
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
@@ -60,21 +60,24 @@ class FarmerController {
 	async get(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
-				farmerId: yup.string().required(propertyMessage.required('Fazendeiro')).length(24, propertyMessage.validate('Fazendeiro')),
+				checklistTypeId: yup
+					.string()
+					.required(propertyMessage.required('Tipo de Checklist'))
+					.length(24, propertyMessage.validate('Tipo de Checklist')),
 			})
 
 			await schemaValidation.validate(req.body, { abortEarly: false })
-			const { farmerId } = req.body
+			const { checklistTypeId } = req.body
 
-			if (!(await service.checkExist(farmerId))) {
+			if (!(await service.checkExist(checklistTypeId))) {
 				return res.status(400).json({
 					error: {
-						message: 'Fazendeiro não encontrado',
+						message: 'Tipo de Checklist não encontrado',
 					},
 				})
 			}
 
-			const resultService = await service.get(farmerId, res)
+			const resultService = await service.get(checklistTypeId, res)
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
@@ -101,21 +104,24 @@ class FarmerController {
 	async delete(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
-				farmerId: yup.string().required(propertyMessage.required('Fazendeiro')).length(24, propertyMessage.validate('Fazendeiro')),
+				checklistTypeId: yup
+					.string()
+					.required(propertyMessage.required('Tipo de Checklist'))
+					.length(24, propertyMessage.validate('Tipo de Checklist')),
 			})
 
 			await schemaValidation.validate(req.body, { abortEarly: false })
-			const { farmerId } = req.body
+			const { checklistTypeId } = req.body
 
-			if (!(await service.checkExist(farmerId))) {
+			if (!(await service.checkExist(checklistTypeId))) {
 				return res.status(400).json({
 					error: {
-						message: 'Fazendeiro não encontrado',
+						message: 'Tipo de Checklist não encontrado',
 					},
 				})
 			}
 
-			const resultService = await service.delete(farmerId, res)
+			const resultService = await service.delete(checklistTypeId, res)
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
@@ -127,4 +133,4 @@ class FarmerController {
 	}
 }
 
-module.exports = new FarmerController()
+module.exports = new ChecklistTypeController()

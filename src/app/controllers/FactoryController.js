@@ -1,21 +1,29 @@
 const yup = require('yup')
 const propertyMessage = require('../helpers/PropertyMessage')
 const ServiceBase = require('../services/ServiceBase')
-const Model = require('../models/Farmer')
+const Model = require('../models/Factory')
 
 const service = new ServiceBase(Model)
-class FarmerController {
+
+class FactoryController {
 	async store(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
 				name: yup.string().required(propertyMessage.required('Nome')),
-				email: yup.string().email(propertyMessage.validate('Email')).required(propertyMessage.required('Email')),
+				location: yup.object({
+					city: yup.string().required(propertyMessage.required('Cidade')),
+					state: yup.string().required(propertyMessage.required('Estado')),
+					coordinates: yup.object({
+						latitude: yup.number().required(propertyMessage.required('Latitude')),
+						longitude: yup.number().required(propertyMessage.required('Longitude')),
+					}),
+				}),
 			})
 
 			await schemaValidation.validate(req.body, { abortEarly: false })
-			const { name, email, phone, isSupervisor } = req.body
+			const { name, location } = req.body
 
-			const resultService = await service.store({ name, email, phone, isSupervisor })
+			const resultService = await service.store({ name, location }, res)
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
@@ -29,24 +37,22 @@ class FarmerController {
 	async update(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
-				farmerId: yup.string().required(propertyMessage.required('Fazendeiro')).length(24, propertyMessage.validate('Fazendeiro')),
+				factoryId: yup.string().required(propertyMessage.required('Fabrica')).length(24, propertyMessage.validate('Fabrica')),
 				name: yup.string(propertyMessage.validate('Nome')),
-				email: yup.string().email(propertyMessage.validate('Email')),
-				phone: yup.string().email(propertyMessage.validate('Telefone')),
 			})
 
 			await schemaValidation.validate(req.body, { abortEarly: false })
-			const { farmerId, name, email, phone, isSupervisor } = req.body
+			const { factoryId, name, location } = req.body
 
-			if (!(await service.checkExist(farmerId))) {
+			if (!(await service.checkExist(factoryId))) {
 				return res.status(400).json({
 					error: {
-						message: 'Fazendeiro não encontrado',
+						message: 'Fabrica não encontrada',
 					},
 				})
 			}
 
-			const resultService = await service.update(farmerId, { name, email, phone, isSupervisor })
+			const resultService = await service.update(factoryId, { name, location })
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
@@ -60,21 +66,21 @@ class FarmerController {
 	async get(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
-				farmerId: yup.string().required(propertyMessage.required('Fazendeiro')).length(24, propertyMessage.validate('Fazendeiro')),
+				factoryId: yup.string().required(propertyMessage.required('Fabrica')).length(24, propertyMessage.validate('Fabrica')),
 			})
 
 			await schemaValidation.validate(req.body, { abortEarly: false })
-			const { farmerId } = req.body
+			const { factoryId } = req.body
 
-			if (!(await service.checkExist(farmerId))) {
+			if (!(await service.checkExist(factoryId))) {
 				return res.status(400).json({
 					error: {
-						message: 'Fazendeiro não encontrado',
+						message: 'Fabrica não encontrada',
 					},
 				})
 			}
 
-			const resultService = await service.get(farmerId, res)
+			const resultService = await service.get(factoryId, res)
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
@@ -101,21 +107,21 @@ class FarmerController {
 	async delete(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
-				farmerId: yup.string().required(propertyMessage.required('Fazendeiro')).length(24, propertyMessage.validate('Fazendeiro')),
+				factoryId: yup.string().required(propertyMessage.required('Fabrica')).length(24, propertyMessage.validate('Fabrica')),
 			})
 
 			await schemaValidation.validate(req.body, { abortEarly: false })
-			const { farmerId } = req.body
+			const { factoryId } = req.body
 
-			if (!(await service.checkExist(farmerId))) {
+			if (!(await service.checkExist(factoryId))) {
 				return res.status(400).json({
 					error: {
-						message: 'Fazendeiro não encontrado',
+						message: 'Fabrica não encontrada',
 					},
 				})
 			}
 
-			const resultService = await service.delete(farmerId, res)
+			const resultService = await service.delete(factoryId, res)
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({
@@ -127,4 +133,4 @@ class FarmerController {
 	}
 }
 
-module.exports = new FarmerController()
+module.exports = new FactoryController()

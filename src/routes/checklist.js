@@ -1,7 +1,7 @@
 const express = require('express')
 
 const routes = express.Router()
-const controller = require('../app/controllers').FarmerController
+const controller = require('../app/controllers').ChecklistController
 
 routes.post('/store', controller.store)
 routes.put('/update', controller.update)

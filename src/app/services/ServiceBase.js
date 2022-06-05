@@ -102,6 +102,11 @@ class ServiceBase {
 			},
 		}
 	}
+
+	async checkExist(id) {
+		const result = await this.model.findOne({ _id: new mongoose.Types.ObjectId(id) })
+		return !!result
+	}
 }
 
 module.exports = ServiceBase

@@ -6,6 +6,7 @@ const ProductionSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Farm',
 			required: true,
+			autopopulate: true,
 		},
 		date: {
 			type: Date,
@@ -19,5 +20,7 @@ const ProductionSchema = new mongoose.Schema(
 	},
 	{ timestamps: true }
 )
+
+ProductionSchema.plugin(require('mongoose-autopopulate'))
 
 module.exports = mongoose.model('Production', ProductionSchema)

@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+require('./City')
+require('./State')
 
 const FactorySchema = new mongoose.Schema(
 	{
@@ -11,11 +13,13 @@ const FactorySchema = new mongoose.Schema(
 				type: mongoose.Schema.Types.ObjectId,
 				required: true,
 				ref: 'City',
+				autopopulate: true,
 			},
 			state: {
 				type: mongoose.Schema.Types.ObjectId,
 				required: true,
 				ref: 'State',
+				autopopulate: true,
 			},
 			coordinates: {
 				latitude: {
@@ -31,5 +35,7 @@ const FactorySchema = new mongoose.Schema(
 	},
 	{ timestamps: true }
 )
+
+FactorySchema.plugin(require('mongoose-autopopulate'))
 
 module.exports = mongoose.model('Factory', FactorySchema)
