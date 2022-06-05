@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 require('./City')
 require('./State')
 require('./Farmer')
@@ -94,5 +95,6 @@ const FarmSchema = new mongoose.Schema(
 )
 
 FarmSchema.plugin(require('mongoose-autopopulate'))
+FarmSchema.plugin(mongoosePaginate)
 
 module.exports = mongoose.model('Farm', FarmSchema)

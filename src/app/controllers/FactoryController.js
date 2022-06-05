@@ -91,9 +91,9 @@ class FactoryController {
 		}
 	}
 
-	async getAll(_, res) {
+	async getAll(req, res) {
 		try {
-			const resultService = await service.getAll(res)
+			const resultService = await service.getAll(req.query.page, req.query.limit)
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 
 const ProductionSchema = new mongoose.Schema(
 	{
@@ -22,5 +23,6 @@ const ProductionSchema = new mongoose.Schema(
 )
 
 ProductionSchema.plugin(require('mongoose-autopopulate'))
+ProductionSchema.plugin(mongoosePaginate)
 
 module.exports = mongoose.model('Production', ProductionSchema)

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 
 const ChecklistSchema = new mongoose.Schema(
 	{
@@ -15,5 +16,7 @@ const ChecklistSchema = new mongoose.Schema(
 	},
 	{ timestamps: true }
 )
+
+ChecklistSchema.plugin(mongoosePaginate)
 
 module.exports = mongoose.model('Checklist', ChecklistSchema)

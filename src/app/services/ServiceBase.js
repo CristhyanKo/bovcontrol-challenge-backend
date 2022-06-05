@@ -40,8 +40,8 @@ class ServiceBase {
 		}
 	}
 
-	async getAll() {
-		const result = await this.model.find()
+	async getAll(page, limit) {
+		const result = await this.model.paginate({}, { page: page || 1, limit: limit || 30, sort: 'createdAt' })
 
 		return {
 			result: {

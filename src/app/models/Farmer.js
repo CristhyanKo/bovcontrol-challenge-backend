@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 
 const FarmerSchema = new mongoose.Schema(
 	{
@@ -20,5 +21,7 @@ const FarmerSchema = new mongoose.Schema(
 	},
 	{ timestamps: true }
 )
+
+FarmerSchema.plugin(mongoosePaginate)
 
 module.exports = mongoose.model('Farmer', FarmerSchema)

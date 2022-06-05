@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 require('./City')
 require('./State')
 
@@ -37,5 +38,6 @@ const FactorySchema = new mongoose.Schema(
 )
 
 FactorySchema.plugin(require('mongoose-autopopulate'))
+FactorySchema.plugin(mongoosePaginate)
 
 module.exports = mongoose.model('Factory', FactorySchema)

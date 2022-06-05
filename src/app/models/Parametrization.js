@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 
 const ParametrizationSchema = new mongoose.Schema(
 	{
@@ -51,5 +52,7 @@ const ParametrizationSchema = new mongoose.Schema(
 	},
 	{ timestamps: true }
 )
+
+ParametrizationSchema.plugin(mongoosePaginate)
 
 module.exports = mongoose.model('Parametrization', ParametrizationSchema)
