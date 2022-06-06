@@ -20,6 +20,8 @@ class ServiceBase {
 	}
 
 	async update(id, data) {
+		console.log(data)
+
 		const result = await this.model.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) }, data, { new: true })
 
 		return {
@@ -30,8 +32,8 @@ class ServiceBase {
 		}
 	}
 
-	async get(id) {
-		const result = await this.model.findOne({ _id: new mongoose.Types.ObjectId(id) })
+	async get(filter) {
+		const result = await this.model.findOne(filter)
 
 		return {
 			result: {
@@ -42,6 +44,16 @@ class ServiceBase {
 
 	async getAll(page, limit) {
 		const result = await this.model.paginate({}, { page: page || 1, limit: limit || 30, sort: 'createdAt' })
+
+		return {
+			result: {
+				data: result,
+			},
+		}
+	}
+
+	async getAllFull() {
+		const result = await this.model.find()
 
 		return {
 			result: {

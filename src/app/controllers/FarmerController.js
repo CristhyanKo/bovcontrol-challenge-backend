@@ -32,7 +32,7 @@ class FarmerController {
 				farmerId: yup.string().required(propertyMessage.required('Fazendeiro')).length(24, propertyMessage.validate('Fazendeiro')),
 				name: yup.string(propertyMessage.validate('Nome')),
 				email: yup.string().email(propertyMessage.validate('Email')),
-				phone: yup.string().email(propertyMessage.validate('Telefone')),
+				phone: yup.string(),
 			})
 
 			await schemaValidation.validate(req.body, { abortEarly: false })

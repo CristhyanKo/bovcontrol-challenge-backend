@@ -4,7 +4,7 @@ const routes = express.Router()
 const controller = require('../app/controllers').ProductionController
 
 routes.post('/store', controller.store)
-routes.put('/update', controller.update)
+routes.post('/update', controller.update)
 routes.post('/delete', controller.delete)
 routes.post('/get', controller.get)
 routes.get('/getAll', controller.getAll)

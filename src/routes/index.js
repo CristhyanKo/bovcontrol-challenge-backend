@@ -1,6 +1,6 @@
 const app = require('express')()
 
-const eps = ['farmer', 'farm', 'factory', 'production', 'parametrization', 'checklist', 'checklistType']
+const eps = ['farmer', 'farm', 'factory', 'production', 'parametrization', 'checklist', 'checklistType', 'city', 'state']
 
 eps.forEach((ep) => {
 	try {
