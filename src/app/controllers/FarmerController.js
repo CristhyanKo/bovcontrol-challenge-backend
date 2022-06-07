@@ -98,6 +98,19 @@ class FarmerController {
 		}
 	}
 
+	async getAllFull(req, res) {
+		try {
+			const resultService = await service.getAllFull()
+			return res.json(resultService)
+		} catch (error) {
+			return res.status(400).json({
+				error: {
+					message: error.errors || error.message,
+				},
+			})
+		}
+	}
+
 	async delete(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
