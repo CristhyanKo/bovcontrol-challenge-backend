@@ -8,5 +8,6 @@ routes.post('/update', controller.update)
 routes.post('/delete', controller.delete)
 routes.post('/get', controller.get)
 routes.get('/getAll', controller.getAll)
+routes.get('/getAllFull', controller.getAllFull)
 
 module.exports = routes
