@@ -10,7 +10,6 @@ class ChecklistController {
 		try {
 			const schemaValidation = yup.object().shape({
 				farm: yup.string().required(propertyMessage.required('Fazenda')).length(24, propertyMessage.validate('Fazenda')),
-				farmer: yup.string().required(propertyMessage.required('Fazendeiro')).length(24, propertyMessage.validate('Fazendeiro')),
 				checklistType: yup
 					.string()
 					.required(propertyMessage.required('Tipo de Checklist'))
@@ -90,6 +89,19 @@ class ChecklistController {
 	async getAll(req, res) {
 		try {
 			const resultService = await service.getAll(req.query.page, req.query.limit)
+			return res.json(resultService)
+		} catch (error) {
+			return res.status(400).json({
+				error: {
+					message: error.errors || error.message,
+				},
+			})
+		}
+	}
+
+	async getAllFull(req, res) {
+		try {
+			const resultService = await service.getAllFull()
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({

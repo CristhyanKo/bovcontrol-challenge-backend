@@ -73,7 +73,7 @@ const FarmSchema = new mongoose.Schema(
 		],
 		supervisors: [
 			{
-				farmerSupervisor: {
+				farmer: {
 					type: mongoose.Schema.Types.ObjectId,
 					ref: 'Farmer',
 					autopopulate: true,

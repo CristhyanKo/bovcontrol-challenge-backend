@@ -7,6 +7,7 @@ routes.post('/store', controller.store)
 routes.post('/update', controller.update)
 routes.post('/delete', controller.delete)
 routes.post('/get', controller.get)
+routes.post('/getByFarm', controller.getByFarm)
 routes.get('/getAll', controller.getAll)
 
 module.exports = routes

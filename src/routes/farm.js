@@ -8,6 +8,7 @@ routes.post('/update', controller.update)
 routes.post('/delete', controller.delete)
 routes.post('/get', controller.get)
 routes.get('/getAll', controller.getAll)
+routes.get('/getAllFull', controller.getAllFull)
 
 routes.post('/addFarmer', controller.addFarmer)
 routes.post('/removeFarmer', controller.removeFarmer)

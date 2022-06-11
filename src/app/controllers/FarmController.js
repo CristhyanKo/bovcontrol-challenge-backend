@@ -106,6 +106,19 @@ class FarmController {
 		}
 	}
 
+	async getAllFull(req, res) {
+		try {
+			const resultService = await service.getAllFull()
+			return res.json(resultService)
+		} catch (error) {
+			return res.status(400).json({
+				error: {
+					message: error.errors || error.message,
+				},
+			})
+		}
+	}
+
 	async delete(req, res) {
 		try {
 			const schemaValidation = yup.object().shape({
@@ -346,7 +359,7 @@ class FarmController {
 			await schemaValidation.validate(req.body, { abortEarly: false })
 			const { farmId } = req.body
 			const adds = {
-				farmerSupervisor: req.body.farmer,
+				farmer: req.body.farmer,
 				startDate: req.body.startDate,
 				endDate: req.body.endDate,
 				current: req.body.current,
@@ -396,7 +409,7 @@ class FarmController {
 				})
 			}
 
-			const resultService = await service.updateArray('supervisors', farmId, { farmerSupervisor: req.body.farmer }, update)
+			const resultService = await service.updateArray('supervisors', farmId, { farmer: req.body.farmer }, update)
 
 			return res.json(resultService)
 		} catch (error) {
@@ -426,7 +439,7 @@ class FarmController {
 				})
 			}
 
-			const resultService = await service.removeArray('supervisors', farmId, { farmerSupervisor: req.body.farmer })
+			const resultService = await service.removeArray('supervisors', farmId, { farmer: req.body.farmer })
 
 			return res.json(resultService)
 		} catch (error) {

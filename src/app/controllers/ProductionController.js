@@ -1,9 +1,9 @@
 const yup = require('yup')
 const propertyMessage = require('../helpers/PropertyMessage')
-const ServiceBase = require('../services/ServiceBase')
 const Model = require('../models/Production')
+const ProductionService = require('../services/ProductionService')
 
-const service = new ServiceBase(Model)
+const service = new ProductionService(Model)
 
 class ProductionController {
 	async store(req, res) {
@@ -74,6 +74,26 @@ class ProductionController {
 			}
 
 			const resultService = await service.get(productionId, res)
+			return res.json(resultService)
+		} catch (error) {
+			return res.status(400).json({
+				error: {
+					message: error.errors || error.message,
+				},
+			})
+		}
+	}
+
+	async getByFarm(req, res) {
+		try {
+			const schemaValidation = yup.object().shape({
+				farmId: yup.string().required(propertyMessage.required('Fazenda')).length(24, propertyMessage.validate('Fazenda')),
+			})
+
+			await schemaValidation.validate(req.body, { abortEarly: false })
+			const { farmId } = req.body
+
+			const resultService = await service.getByFarm(farmId, res)
 			return res.json(resultService)
 		} catch (error) {
 			return res.status(400).json({

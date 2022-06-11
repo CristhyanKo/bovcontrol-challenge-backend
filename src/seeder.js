@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 const mongoose = require('mongoose')
+const ChecklistType = require('./app/models/ChecklistType')
 const State = require('./app/models/State')
 const City = require('./app/models/City')
 const seed = require('./seeds')
@@ -25,6 +26,9 @@ const seedDB = async () => {
 	})
 
 	await Promise.all(promises).then(() => console.log('> Cities seeded'))
+
+	await ChecklistType.deleteMany({}).then(() => console.log('> ChecklistTypes deleted'))
+	await ChecklistType.insertMany(await seed.ChecklistType()).then(() => console.log('> ChecklistTypes seeded'))
 }
 
 seedDB().then(() => {
